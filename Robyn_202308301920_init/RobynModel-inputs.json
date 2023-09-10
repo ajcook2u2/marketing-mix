@@ -1,0 +1,43 @@
+{
+  "InputCollect": {
+    "date_var": ["Date"],
+    "dayInterval": [7],
+    "intervalType": ["week"],
+    "dep_var": ["Sales"],
+    "dep_var_type": ["conversion"],
+    "prophet_vars": [],
+    "paid_media_vars": ["TikTok", "Facebook", "Google_Ads"],
+    "paid_media_signs": ["positive", "positive", "positive"],
+    "paid_media_spends": ["TikTok", "Facebook", "Google_Ads"],
+    "mediaVarCount": [3],
+    "exposure_vars": [],
+    "all_media": ["TikTok", "Facebook", "Google_Ads"],
+    "all_ind_vars": ["TikTok", "Facebook", "Google_Ads"],
+    "unused_vars": [],
+    "window_start": ["2018-01-07"],
+    "rollingWindowStartWhich": [1],
+    "window_end": ["2021-10-31"],
+    "rollingWindowEndWhich": [200],
+    "rollingWindowLength": [200],
+    "refreshAddedStart": ["2018-01-07"],
+    "adstock": ["geometric"],
+    "hyperparameters": {
+      "Facebook_alphas": [0.5, 3],
+      "Facebook_gammas": [0.3, 1],
+      "Facebook_thetas": [0, 0.3],
+      "Google_Ads_alphas": [0.5, 3],
+      "Google_Ads_gammas": [0.3, 1],
+      "Google_Ads_thetas": [0, 0.3],
+      "TikTok_alphas": [0.5, 3],
+      "TikTok_gammas": [0.3, 1],
+      "TikTok_thetas": [0, 0.3],
+      "train_size": [0.5, 0.8]
+    },
+    "calibration_input": {},
+    "custom_params": [],
+    "version": ["Robyn (stable) v3.10.3 [R-4.2.2]"]
+  },
+  "OutputCollect": {
+    "conv_msg": ["DECOMP.RSSD converged", "NRMSE NOT converged"]
+  }
+}

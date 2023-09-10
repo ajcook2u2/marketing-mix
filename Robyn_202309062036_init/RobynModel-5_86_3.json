@@ -1,0 +1,141 @@
+{
+  "InputCollect": {
+    "date_var": ["Date"],
+    "dayInterval": [7],
+    "intervalType": ["week"],
+    "dep_var": ["Sales"],
+    "dep_var_type": ["conversion"],
+    "prophet_vars": [],
+    "paid_media_vars": ["TikTok", "Facebook", "Google_Ads"],
+    "paid_media_signs": ["positive", "positive", "positive"],
+    "paid_media_spends": ["TikTok", "Facebook", "Google_Ads"],
+    "mediaVarCount": [3],
+    "exposure_vars": [],
+    "all_media": ["TikTok", "Facebook", "Google_Ads"],
+    "all_ind_vars": ["TikTok", "Facebook", "Google_Ads"],
+    "unused_vars": [],
+    "window_start": ["2018-01-07"],
+    "rollingWindowStartWhich": [1],
+    "window_end": ["2021-10-31"],
+    "rollingWindowEndWhich": [200],
+    "rollingWindowLength": [200],
+    "refreshAddedStart": ["2018-01-07"],
+    "adstock": ["geometric"],
+    "hyperparameters": {
+      "Facebook_alphas": [0.5, 3],
+      "Facebook_gammas": [0.3, 1],
+      "Facebook_thetas": [0, 0.3],
+      "Google_Ads_alphas": [0.5, 3],
+      "Google_Ads_gammas": [0.3, 1],
+      "Google_Ads_thetas": [0, 0.3],
+      "TikTok_alphas": [0.5, 3],
+      "TikTok_gammas": [0.3, 1],
+      "TikTok_thetas": [0, 0.3],
+      "train_size": [0.5, 0.8]
+    },
+    "calibration_input": {},
+    "custom_params": [],
+    "version": ["Robyn (stable) v3.10.3 [R-4.2.2]"]
+  },
+  "OutputCollect": {
+    "conv_msg": ["DECOMP.RSSD converged", "NRMSE NOT converged"]
+  },
+  "ExportedModel": {
+    "select_model": ["5_86_3"],
+    "ts_validation": [true],
+    "summary": [
+      {
+        "variable": "(Intercept)",
+        "coef": 5040.4167,
+        "decompPer": 0.4732,
+        "decompAgg": 1008083.334
+      },
+      {
+        "variable": "TikTok",
+        "coef": 9266.0769,
+        "decompPer": 0.2319,
+        "decompAgg": 494030.2068,
+        "performance": 1.1927,
+        "mean_response": 3224.4061,
+        "mean_spend": 2946.2076,
+        "boot_mean": 1.2843,
+        "ci_low": 1.1426,
+        "ci_up": 1.4277
+      },
+      {
+        "variable": "Facebook",
+        "coef": 5200.187,
+        "decompPer": 0.1493,
+        "decompAgg": 318117.4116,
+        "performance": 1.3917,
+        "mean_response": 1812.7959,
+        "mean_spend": 2213.5851,
+        "boot_mean": 1.4889,
+        "ci_low": 1.2575,
+        "ci_up": 1.7209
+      },
+      {
+        "variable": "Google_Ads",
+        "coef": 5326.0777,
+        "decompPer": 0.1456,
+        "decompAgg": 310280.2054,
+        "performance": 0.9802,
+        "mean_response": 1447.0587,
+        "mean_spend": 1520.7225,
+        "boot_mean": 0.9502,
+        "ci_low": 0.8369,
+        "ci_up": 1.063
+      }
+    ],
+    "errors": [
+      {
+        "rsq_train": 0.9069,
+        "rsq_val": 0.9653,
+        "rsq_test": 0.8034,
+        "nrmse_train": 0.0628,
+        "nrmse_val": 0.278,
+        "nrmse_test": 0.5402,
+        "nrmse": 0.278,
+        "decomp.rssd": 0.0684,
+        "mape": 0
+      }
+    ],
+    "hyper_values": {
+      "Facebook_alphas": [0.9271],
+      "Facebook_gammas": [0.6296],
+      "Facebook_thetas": [0.237],
+      "Google_Ads_alphas": [2.9023],
+      "Google_Ads_gammas": [0.9588],
+      "Google_Ads_thetas": [0.251],
+      "lambda": [280.596],
+      "TikTok_alphas": [0.5457],
+      "TikTok_gammas": [0.6126],
+      "TikTok_thetas": [0.2875],
+      "train_size": [0.7707]
+    },
+    "hyper_updated": {
+      "Facebook_alphas": [0.5, 3],
+      "Facebook_gammas": [0.3, 1],
+      "Facebook_thetas": [0, 0.3],
+      "Google_Ads_alphas": [0.5, 3],
+      "Google_Ads_gammas": [0.3, 1],
+      "Google_Ads_thetas": [0, 0.3],
+      "TikTok_alphas": [0.5, 3],
+      "TikTok_gammas": [0.3, 1],
+      "TikTok_thetas": [0, 0.3],
+      "lambda": [0, 1],
+      "train_size": [0.5, 0.8]
+    },
+    "calibration_constraint": [0.1],
+    "cores": [23],
+    "iterations": [2000],
+    "trials": [5],
+    "intercept_sign": ["non_negative"],
+    "nevergrad_algo": ["TwoPointsDE"],
+    "add_penalty_factor": [false],
+    "seed": [123],
+    "pareto_fronts": [3],
+    "hyper_fixed": [false],
+    "plot_folder": ["D:/downloads/kaggle/marketing mix/Robyn_202309062036_init/"]
+  }
+}
