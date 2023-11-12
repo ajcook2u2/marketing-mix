@@ -3,6 +3,8 @@ library(readr)
 library(dplyr)
 library(lubridate)
 library(jsonlite)
+library(ggplot2)
+library(caTools)
 
 Sys.setenv(R_FUTURE_FORK_ENABLE = "true")
 options(future.fork.enable = TRUE)
@@ -92,9 +94,8 @@ print(exported_model)
 
 
 AllocatorCollect1 <- robyn_allocator(
-  InputCollect = InputCollect,
-  OutputCollect = OutputCollect,
-  select_model = select_model,
+  json_file  = model_json,
+  dt_input = data,
   # date_range = NULL, # Default last month as initial period
   # total_budget = NULL, # When NULL, default is total spend in date_range
   #channel_constr_low = 0.7,
@@ -125,44 +126,44 @@ saveRDS(model_json, file = "D:/downloads/kaggle/marketing mix/Robyn_202309062111
 model <- robyn_load('D:/downloads/kaggle/marketing mix/Robyn_202309062111_init/model.RDS')
 print(model)
 
-
-
-
-json_file <- 'D:/downloads/kaggle/marketing mix/Robyn_202309062111_init/RobynModel-5_86_3.json'
-
-# Optional: Manually read and check data stored in file
-json_data <- robyn_read(json_file)
-print(json_data)
-
-holidays <- dt_prophet_holidays
-# Re-create InputCollect
-InputCollectX <- robyn_inputs(
+prophet_vars <- c('TikTok', 'Google_Ads', 'Facebook')
+RobynRefresh <- robyn_refresh(
+  json_file = model,
   dt_input = data,
   dt_holidays = holidays,
-  json_file = json_file)
+  refresh_steps = 13,
+  refresh_iters = 1000, # 1k is an estimation
+  refresh_trials = 1,
+  dep_var = 'Sales',
+  dep_var_type = 'conversion',
+  paid_media_spends = prophet_vars,
+  adstock = 'geometric'
+  )
 
-# Re-create OutputCollect
-OutputCollectX <- robyn_run(
-  InputCollect = InputCollectX,
-  json_file = json_file,
-  export = create_files)
-
-response <- robyn_response(
-  InputCollect = InputCollectX,
-  OutputCollect = OutputCollectX,
-  metric_name = "TikTok",
-  metric_value = 150000,
-  select_model='5_86_3',
-  date_range = 'all'
-)
+inputcollectX = model$Robyn$InputCollect
+outputcollectX = model$Robyn$OutputCollect
+select_modelX = model$Robyn$ExportedModel$select_model
 
 
 
-Theta <- 0.2875
-Alpha <- 0.5457
-Gamma <- 0.6126
+#    "hyper_values": 
+#"Facebook_alphas": [0.9271],
+#"Facebook_gammas": [0.6296],
+#"Facebook_thetas": [0.237],
+#"Google_Ads_alphas": [2.9023],
+#Google_Ads_gammas": [0.9588],
+#"Google_Ads_thetas": [0.251],
+#"lambda": [280.596],
+#"TikTok_alphas": [0.5457],
+#"TikTok_gammas": [0.6126],
+#"TikTok_thetas": [0.2875],
+#"train_size": [0.7707]
 
-grid <- seq(0,1,length.out=30000)
+Theta <- 0.251
+Alpha <- 2.9023
+Gamma <- 0.9588
+
+grid <- seq(0,2,length.out=60000)
 
 hillcurve <- function(x, alpha, gamma){
   alpha <- as.numeric(alpha)
@@ -182,7 +183,29 @@ dervitives <- function(x, y){
 
 ys <- hillcurve(grid, Alpha, Gamma)
 
+
 deriv <- dervitives(grid, ys)
+deriv[[1]] <- na.omit(deriv[[1]])
+deriv[[2]] <- na.omit(deriv[[2]])
 
+plain <- data.frame(grid=grid, ys=ys)
 
+deriv_df1 <- data.frame(deriv=deriv[[1]])
+deriv_df1 <- deriv_df1 %>%
+  mutate(rownumber=row_number())
+
+deriv_df2 <- data.frame(deriv=deriv[[2]])
+deriv_df2 <- deriv_df2 %>%
+  mutate(rownumber=row_number())
+
+ggplot(plain) + geom_point(aes(x=grid, y=ys))
+ggplot(deriv_df1) + geom_point(aes(x=rownumber, y=deriv))
+ggplot(deriv_df2) + geom_point(aes(x=rownumber, y=deriv))
+
+x_min <- ys[which.min(deriv[[2]])]
+x_max <- ys[which.max(deriv[[2]])]
+
+tiktok <- OutputCollectX[["mediaVecCollect"]]$Google_Ads
+build <- x_max*(max(tiktok) - min(tiktok)) + min(tiktok)
+saturated <- x_min*(max(tiktok) - min(tiktok)) + min(tiktok)          
 
